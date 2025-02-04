@@ -1,36 +1,55 @@
-from tkinter import *
-from tkinter import ttk
+import tkinter
 import random
 
-root = Tk()
-frm = ttk.Frame(root, padding=10)
-frm.grid()
-tictactoe = ttk.Frame(root, padding=10)
-tictactoe.grid()
-ttk.Label(frm, text="welcome to my first game of tic tac toe !").grid(column=1, row=0)
-ttk.Button(tictactoe, text="Quit", command=root.destroy).grid(column=1, row=5)
-
-playerTurn = 0
-
 # functions
-def changeSquareLabel(playerTurn):
-    if playerTurn == 0:
-        playerTurn = 1
-        return "O"
-    else:
-        playerTurn = 0
-        return "X"
+def changeTileLabel(row, column):
+    # check if the tile is empty
+    global currPlayer
+    if buttons[row][column]["text"] != "":
+        return
 
-# tic tac toe interface
-ttk.Button(tictactoe, command=changeSquareLabel(playerTurn)).grid(column=0, row=1)
-ttk.Button(tictactoe, command=root.destroy).grid(column=1, row=1)
-ttk.Button(tictactoe, command=root.destroy).grid(column=2, row=1)
-ttk.Button(tictactoe, command=root.destroy).grid(column=0, row=2)
-ttk.Button(tictactoe, command=root.destroy).grid(column=1, row=2)
-ttk.Button(tictactoe, command=root.destroy).grid(column=2, row=2)
-ttk.Button(tictactoe, command=root.destroy).grid(column=0, row=3)
-ttk.Button(tictactoe, command=root.destroy).grid(column=1, row=3)
-ttk.Button(tictactoe, command=root.destroy).grid(column=2, row=3)
+    # if not, writes the symbol of the current player
+    buttons[row][column]["text"] = currPlayer
+    if currPlayer == "X" :
+        currPlayer = players[1]
+    else :
+        currPlayer = players[0]
+
+    #the turn label changes depending on whose turn it is
+    turnLabel["text"] = "it's " + currPlayer + " turn !"
+
+# variables
+players = ["X", "O"]
+currPlayer = players[0]
+buttons = [[0, 0, 0],
+           [0, 0, 0],
+           [0, 0, 0] ]
 
 
-root.mainloop()
+# window setup
+window = tkinter.Tk()
+window.title("tic tac toe but it's weirder")
+window.resizable(False, False)
+
+
+frm = tkinter.Frame(window)
+frm.grid()
+tictactoe = tkinter.Frame(window)
+tictactoe.grid()
+
+# title and quit button
+label = tkinter.Label(frm, text="welcome to my first game of tic tac toe !").grid(column=1, row=0)
+turnLabel = tkinter.Label(frm, text="it's " + currPlayer + " turn !")
+turnLabel.grid(column=1, row=21)
+quitButton = tkinter.Button(tictactoe, text="Quit", command=window.destroy).grid(column=1, row=5)
+
+
+# tic tac toe board
+for row in range(3) :
+    for column in range(3):
+        buttons[row][column] = tkinter.Button(tictactoe, text="", width=10, height=4, command= lambda row=row, column=column: changeTileLabel(row,column))
+        buttons[row][column].grid(column=column, row=row)
+
+
+
+window.mainloop()
