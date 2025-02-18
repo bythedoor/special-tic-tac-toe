@@ -4,7 +4,7 @@ import random
 # functions
 def changeTileLabel(row, column):
     # check if the tile is empty
-    global currPlayer
+    global currPlayer, turns
     if buttons[row][column]["text"] != "":
         return
 
@@ -12,15 +12,44 @@ def changeTileLabel(row, column):
     buttons[row][column]["text"] = currPlayer
     if currPlayer == "X" :
         currPlayer = players[1]
+        turns += 1
     else :
         currPlayer = players[0]
+        turns += 1
 
     #the turn label changes depending on whose turn it is
     turnLabel["text"] = "it's " + currPlayer + " turn !"
 
+    checkBoard()
+
+def checkBoard():
+    # checking horizontally
+    for row in range(3):
+        if (buttons[row][0]["text"] == buttons[row][1]["text"] == buttons[row][2]["text"]) and buttons[row][0]["text"] != "":
+            turnLabel["text"] = buttons[row][0]["text"] + " won !"
+
+    #checking vertically
+    for column in range(3):
+        if (buttons[0][column]["text"] == buttons[1][column]["text"] == buttons[2][column]["text"]) and buttons[0][column]["text"] != "":
+            turnLabel["text"] = buttons[0][column]["text"] + " won !"
+
+    #checking diagonally
+    if (buttons[0][0]["text"] == buttons[1][1]["text"] == buttons[2][2]["text"]) and buttons[0][0]["text"] != "":
+        turnLabel["text"] = buttons[0][0]["text"] + " won !"
+
+    #checking anti diagonally
+    if (buttons[0][2]["text"] == buttons[1][1]["text"] == buttons[2][0]["text"]) and buttons[0][2]["text"] != "":
+        turnLabel["text"] = buttons[0][2]["text"] + " won !"
+
+    #checking if there's a tie
+    if turns == 9:
+        turnLabel["text"] = "nobody won ... :("
+
+    
 # variables
 players = ["X", "O"]
 currPlayer = players[0]
+turns = 0
 buttons = [[0, 0, 0],
            [0, 0, 0],
            [0, 0, 0] ]
