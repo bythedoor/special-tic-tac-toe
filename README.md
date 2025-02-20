@@ -1,5 +1,5 @@
 # special-tic-tac-toe
-> a basic, reziable tic tac toe game in python
+> a basic, resizable tic tac toe game in python
 
 ## Issues
 - No restart button
