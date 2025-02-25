@@ -54,15 +54,18 @@ def checkBoard():
         winner = True
 
     #checking if there's a tie
-    if turns == 9:
+    if turns == 9 and winner != True:
         turnLabel["text"] = "nobody won ... :("
 
 def resetBoard():
-    global buttons
+    global buttons, winner
 
     for row in range(3):
         for column in range(3):
             buttons[row][column]["text"] = ""
+
+    turnLabel["text"] = "it's " + currPlayer + " turn !"
+    winner = False
 
 
 # variables
